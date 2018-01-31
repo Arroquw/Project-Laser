@@ -32,8 +32,8 @@ struct point_2_d {
 struct header_2_d {
 	char ilda[4];
 	byte format_code[4];
-	std::string frame_name;
-	std::string company_name;
+	char frame_name[8];
+	char company_name[8];
 	uint16_t points;
 	uint16_t frame_number;
 	uint16_t frames;
@@ -73,7 +73,7 @@ void create(ifstream file) {
 
 int main(int argc, char* argv[]) {
 	try {
-		ifstream ilda(argv[1]);
+		std::ifstream ilda(argv[1]);
 		ilda_header *headers = create(ilda);
 		while (headers != nullptr);
 	} catch (...) {

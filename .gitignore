@@ -8,10 +8,6 @@
 *.sln.docstates
 *.raw
 CPPLINT*
-*.vcxproj
-*.vxproj
-*.filters
-*.sln
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -243,28 +239,3 @@ ModelManifest.xml
 
 # Paket dependency manager
 .paket/paket.exe
-
-# FAKE - F# Make
-.fake/
-/Project1/build/bluetooth.exe
-/Modulation/build/modulation.exe
-/Demodulation/build/demodulation.exe
-/DSPFilters/build/c4che
-/DSPFilters/build/shared/DSPFilters/source/State.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/RootFinder.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/RBJ.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/PoleFilter.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Param.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Legendre.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Filter.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Elliptic.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Documentation.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Design.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Custom.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/ChebyshevII.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/ChebyshevI.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Cascade.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Butterworth.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Biquad.cpp.1.o
-/DSPFilters/build/shared/DSPFilters/source/Bessel.cpp.1.o
-/DSPFilters/waf-1.6.11-30618c54883417962c38f5d395f83584/waflib
