@@ -5,11 +5,11 @@
 typedef unsigned char byte;
 
 struct header_ilda {
-	char ilda[4];
+	char ilda[5];
 	byte reserved[3];
 	byte format_code;
-	char frame_name[8];
-	char company_name[8];
+	char frame_name[9];
+	char company_name[9];
 	uint16_t number_of_records;
 	uint16_t frame_number;
 	uint16_t total_frames;
@@ -24,10 +24,18 @@ struct true_color {
 };
 
 struct point_2d {
-	uint16_t x_coord;
-	uint16_t y_coord;
+	int16_t x_coord;
+	int16_t y_coord;
 	byte status_code;
-	true_color colors;
+	byte color_index;
+};
+
+struct point_3d {
+	int16_t x_coord;
+	int16_t y_coord;
+	int16_t z_coord;
+	byte status_code;
+	byte color_index;
 };
 
 class ilda_reader {
@@ -37,18 +45,21 @@ public:
 	virtual void read_file();
 private:
 	virtual std::streamsize getFileSize(std::ifstream&);
-	virtual void read_ilda_header(std::ifstream&);
+	virtual std::ifstream& read_ilda_header(std::ifstream&);
 	template<typename Word> std::ifstream& read_word(std::ifstream& ins, Word& value, unsigned size = sizeof Word);
 	std::string path_;
 	header_ilda hdr_;
-	point_2d *points;
+	point_3d *points;
 };
 
 template<typename Word>
 inline std::ifstream & ilda_reader::read_word(std::ifstream& ins, Word & value, unsigned size) {
 	value = 0;
+	
 	for (unsigned n = 0; n < size; ++n) {
-		value |= ins.get() << (8*n);
+		Word x = ins.get() << 8*n;
+		value |= x;
+	
 	}
 	return ins;
 }

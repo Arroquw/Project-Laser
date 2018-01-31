@@ -24,9 +24,19 @@ void ilda_reader::read_file() {
 		std::cout << hdr_.frame_number << std::endl;
 		std::cout << hdr_.total_frames << std::endl;
 		std::cout << (int)hdr_.proj_number << std::endl;
-		points = new point_2d[hdr_.number_of_records];
-		file.read(reinterpret_cast<char*>(points), hdr_.number_of_records);
-		std::for_each(points, points + hdr_.number_of_records, [&](point_2d x) {std::cout << x.x_coord << std::endl; });
+
+		auto pts = hdr_.number_of_records;
+		points = new point_3d[pts];
+		int i = 0;
+		byte x = 0;
+		std::cout << file.tellg() << std::endl;
+		do {
+			file.read(reinterpret_cast<char*>(points)+(i*sizeof point_3d), sizeof point_3d);
+			x = points[i].status_code >> 7;
+			std::cout << (int)x << std::endl;
+			i++;
+		} while (x < 0b1);
+		std::cout << (int)points[i-1].status_code << std::endl << i;
 	} else {
 		std::cout << "File not found!" << std::endl;
 	}
@@ -40,7 +50,19 @@ std::streamsize ilda_reader::getFileSize(std::ifstream &ins) {
 	return length;
 }
 
-void ilda_reader::read_ilda_header(std::ifstream& ins) {
-	ins.read(reinterpret_cast<char*>(&hdr_), sizeof header_ilda);
+std::ifstream& ilda_reader::read_ilda_header(std::ifstream& ins) {
+	ins.read(hdr_.ilda, sizeof hdr_.ilda-1);
+	hdr_.ilda[4] = '\0';
+	ins.ignore(sizeof hdr_.reserved);
+	read_word(ins, hdr_.format_code);
+	ins.read(hdr_.frame_name, sizeof hdr_.frame_name -1);
+	hdr_.frame_name[8] = '\0';
+	ins.read(hdr_.company_name, sizeof hdr_.company_name -1);
+	hdr_.company_name[8] = '\0';
+	read_word(ins, hdr_.number_of_records);
+	read_word(ins, hdr_.frame_number);
+	read_word(ins, hdr_.total_frames);
+	read_word(ins, hdr_.proj_number);
+	ins.ignore(sizeof hdr_.reserved2);
+	return ins;
 }
-
