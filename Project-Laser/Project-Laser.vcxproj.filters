@@ -18,8 +18,20 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source.cpp">
+    <ClCompile Include="ildareader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ildareader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\BARNEY19.ILD" />
+    <None Include="..\CanadaFlag.ild" />
+    <None Include="..\CanGoose.ild" />
+    <None Include="..\HIPHOP18.ILD" />
+    <None Include="..\Ladylegs.ild" />
   </ItemGroup>
 </Project>
