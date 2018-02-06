@@ -66,7 +66,6 @@ struct point3_d_true {
 	struct true_color colors;
 };
 
-void *read_file(FILE* ins, int format_code, void* point);
 void read_ilda_header(FILE* ins, struct header_ilda* hdr);
 void read3_dt(struct point3_d_true* point, FILE* ins);
 void read2_dt(struct point2_d_true* point, FILE* ins);
