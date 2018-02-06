@@ -15,32 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Source.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ildareader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadVisitor.cpp">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ildareader.h">
+    <ClInclude Include="ilda_reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointVisitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadVisitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\BARNEY19.ILD" />
-    <None Include="..\CanadaFlag.ild" />
-    <None Include="..\CanGoose.ild" />
-    <None Include="..\HIPHOP18.ILD" />
-    <None Include="..\Ladylegs.ild" />
   </ItemGroup>
 </Project>
