@@ -22,7 +22,7 @@ struct header_ilda {
 	uint16_t frame_number;
 	uint16_t total_frames;
 	byte proj_number;
-	byte reserved2;
+	byte future;
 };
 
 struct true_color {
