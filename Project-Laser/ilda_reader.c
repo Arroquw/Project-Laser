@@ -44,15 +44,6 @@ void read_palette(struct palette* point, FILE* ins) {
     point->red = buffer[2];
 }
 
-void read2_dt(struct point2_d_true* point, FILE* ins) {
-    uint8_t buffer[sizeof(struct point2_d_true)];
-    fread(buffer, sizeof(struct point2_d_true), 1, ins);
-    point->x_coord = buffer[0] << B | buffer[1] << L;
-    point->y_coord = buffer[2] << B | buffer[3] << L;
-    point->status_code = buffer[4];
-    memcpy(buffer + 5, &point->colors, 3);
-}
-
 void read3_dt(struct point3_d_true* point, FILE* ins) {
     uint8_t buffer[sizeof(struct point3_d_true)];
     fread(buffer, sizeof(struct point3_d_true), 1, ins);
@@ -61,6 +52,15 @@ void read3_dt(struct point3_d_true* point, FILE* ins) {
     point->z_coord = buffer[4] << B | buffer[5] << L;
     point->status_code = buffer[6];
     memcpy(buffer + 7, &point->colors, 3);
+}
+
+void read2_dt(struct point2_d_true* point, FILE* ins) {
+    uint8_t buffer[sizeof(struct point2_d_true)];
+    fread(buffer, sizeof(struct point2_d_true), 1, ins);
+    point->x_coord = buffer[0] << B | buffer[1] << L;
+    point->y_coord = buffer[2] << B | buffer[3] << L;
+    point->status_code = buffer[4];
+    memcpy(buffer + 5, &point->colors, 3);
 }
 
 void read_ilda_header(FILE* ins, struct header_ilda *hdr) {
@@ -121,10 +121,11 @@ void read_ilda() {
         }
         case 4:
         {
-            struct point2_d_true point = { 0 };
+            struct point3_d_true point = { 0 };
             for (; point.status_code >> 7 != 1;) {
-                read2_dt(&point, fp);
-                printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                read3_dt(&point, fp);
+                printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
+                
             }
             read_ilda_header(fp, &hdr);
             print_header(hdr);
@@ -132,10 +133,10 @@ void read_ilda() {
         }
         case 5:
         {
-            struct point3_d_true point = { 0 };
+            struct point2_d_true point = { 0 };
             for (; point.status_code >> 7 != 1;) {
-                read3_dt(&point, fp);
-                printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
+                read2_dt(&point, fp);
+                printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
             }
             read_ilda_header(fp, &hdr);
             print_header(hdr);

@@ -52,6 +52,14 @@ struct point3_d {
 	byte color_index;
 };
 
+struct point3_d_true {
+    int16_t x_coord;
+    int16_t y_coord;
+    int16_t z_coord;
+    byte status_code;
+    struct true_color colors;
+};
+
 struct point2_d_true {
 	int16_t x_coord;
 	int16_t y_coord;
@@ -59,13 +67,7 @@ struct point2_d_true {
 	struct true_color colors;
 };
 
-struct point3_d_true {
-	int16_t x_coord;
-	int16_t y_coord;
-	int16_t z_coord;
-	byte status_code;
-	struct true_color colors;
-};
+
 
 void read_ilda_header(FILE* ins, struct header_ilda* hdr);
 void read3_dt(struct point3_d_true* point, FILE* ins);
