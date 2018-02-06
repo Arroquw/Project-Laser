@@ -5,8 +5,9 @@
 *      Author: Justi
 */
 
-#ifndef ILDA_READER_H_
-#define ILDA_READER_H_
+#ifndef PROJECT_LASER_ILDA_READER_H_
+// ReSharper disable once CppInconsistentNaming
+#define PROJECT_LASER_ILDA_READER_H_
 #include <stdint.h>
 #include <stdio.h>
 typedef unsigned char byte;
@@ -75,4 +76,4 @@ void read_palette(struct palette* point, FILE* ins);
 void read_ilda();
 
 
-#endif /* ILDA_READER_H_ */
+#endif //PROJECT_LASER_ILDA_READER_H_
