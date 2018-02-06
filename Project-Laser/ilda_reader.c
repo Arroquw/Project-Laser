@@ -4,16 +4,9 @@
 
 #define HEADER_SIZE 32
 
-#ifdef BIG_ENDIAN
-#define B 8
-#define L 0
-#elif LITTLE_ENDIAN
-#define B 0
-#define L 8
-#else
-#define B 8
-#define L 0
-#endif
+#define LITTLE_ENDIAN 1 //endianness of host
+#define B 8*LITTLE_ENDIAN
+#define L 8*(!LITTLE_ENDIAN)
 
 void print_header(struct header_ilda hdr);
 
@@ -125,7 +118,7 @@ void read_ilda() {
             for (; point.status_code >> 7 != 1;) {
                 read3_dt(&point, fp);
                 printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
-                
+
             }
             read_ilda_header(fp, &hdr);
             print_header(hdr);
