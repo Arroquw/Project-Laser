@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define HEADER_SIZE 32
+
 #ifdef BIG_ENDIAN
 #define B 8
 #define L 0
@@ -64,8 +66,8 @@ void read_palette(struct palette* point, FILE* ins) {
 }
 
 void read_ilda_header(FILE* ins, struct header_ilda *hdr) {
-	uint8_t buffer[sizeof(struct header_ilda)-4];
-	fread(buffer, sizeof(struct header_ilda)-4, 1, ins);
+	uint8_t buffer[HEADER_SIZE];
+	fread(buffer, HEADER_SIZE, 1, ins);
 	memcpy(hdr->ilda, buffer, 4);
 	hdr->ilda[4] = '\0';
 	hdr->format_code = buffer[7];
@@ -95,8 +97,10 @@ void read_ilda_header(FILE* ins, struct header_ilda *hdr) {
 }
 
 void read_ilda() {
-	FILE* fp = fopen("C:/Users/Justi/Documents/GitHub/Project-Laser/Ladylegs.ild", "rb");
+	FILE* fp = fopen("../Ladylegs.ild", "rb");
 	struct header_ilda hdr;
+	
+
 	read_ilda_header(fp, &hdr);
 	printf("%s\n%d\n%s\n%s\n%d\n%d\n%d\n%d\n", hdr.ilda, hdr.format_code, hdr.company_name, hdr.frame_name, hdr.number_of_records, hdr.frame_number, hdr.total_frames, hdr.proj_number);
 	while (hdr.number_of_records != 0) {
