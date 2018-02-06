@@ -24,4 +24,11 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\BARNEY19.ILD" />
+    <None Include="..\CanadaFlag.ild" />
+    <None Include="..\CanGoose.ild" />
+    <None Include="..\HIPHOP18.ILD" />
+    <None Include="..\Ladylegs.ild" />
+  </ItemGroup>
 </Project>
