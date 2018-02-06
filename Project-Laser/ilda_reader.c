@@ -1,5 +1,6 @@
 #include "ilda_reader.h"
 #include <stdio.h>
+#include <string.h>
 
 #ifdef BIG_ENDIAN
 #define B 8
@@ -63,7 +64,21 @@ void read_palette(struct palette* point, FILE* ins) {
 }
 
 void read_ilda_header(FILE* ins, struct header_ilda *hdr) {
-	fread(hdr->ilda, sizeof(hdr->ilda[0]), sizeof hdr->ilda - 1, ins);
+	uint8_t buffer[sizeof(struct header_ilda)-4];
+	fread(buffer, sizeof(struct header_ilda)-4, 1, ins);
+	memcpy(hdr->ilda, buffer, 4);
+	hdr->ilda[4] = '\0';
+	hdr->format_code = buffer[7];
+	memcpy(hdr->frame_name, buffer + 8, 8);
+	hdr->frame_name[8] = '\0';
+	memcpy(hdr->company_name, buffer + 16, 8);
+	hdr->company_name[8] = '\0';
+
+	hdr->number_of_records = buffer[24] << B | buffer[25] << L;
+	hdr->frame_number = buffer[26] << B | buffer[27] << L;
+	hdr->total_frames = buffer[28] << B | buffer[29] << L;
+	hdr->proj_number = buffer[30];
+	/*fread(hdr->ilda, sizeof(hdr->ilda[0]), sizeof hdr->ilda - 1, ins);
 	hdr->ilda[4] = '\0';
 	fread(hdr->reserved, sizeof(hdr->reserved[0]), sizeof hdr->reserved, ins);
 	fread(&hdr->format_code, sizeof hdr->format_code, 1, ins);
@@ -71,11 +86,12 @@ void read_ilda_header(FILE* ins, struct header_ilda *hdr) {
 	hdr->frame_name[8] = '\0';
 	fread(hdr->company_name, sizeof(hdr->company_name[0]), sizeof hdr->company_name - 1, ins);
 	hdr->company_name[8] = '\0';
+
 	fread(&hdr->number_of_records, sizeof hdr->number_of_records, 1, ins);
 	fread(&hdr->frame_number, sizeof hdr->frame_number, 1, ins);
 	fread(&hdr->total_frames, sizeof hdr->total_frames, 1, ins);
 	fread(&hdr->proj_number, sizeof hdr->proj_number, 1, ins);
-	fread(&hdr->reserved2, sizeof hdr->reserved2, 1, ins);
+	fread(&hdr->reserved2, sizeof hdr->reserved2, 1, ins);*/
 }
 
 void read_ilda() {
