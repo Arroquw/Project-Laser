@@ -14,7 +14,6 @@ typedef unsigned char byte;
 
 struct header_ilda {
 	char ilda[5];
-	byte reserved[3];
 	byte format_code;
 	char frame_name[9];
 	char company_name[9];
@@ -22,7 +21,6 @@ struct header_ilda {
 	uint16_t frame_number;
 	uint16_t total_frames;
 	byte proj_number;
-	byte future;
 };
 
 struct true_color {
@@ -69,12 +67,12 @@ struct point2_d_true {
 
 
 
-void read_ilda_header(FILE* ins, struct header_ilda* hdr);
-void read3_dt(struct point3_d_true* point, FILE* ins);
-void read2_dt(struct point2_d_true* point, FILE* ins);
-void read3_d(struct point3_d* point, FILE* ins);
-void read2_d(struct point2_d* point, FILE* ins);
-void read_palette(struct palette* point, FILE* ins);
+int read_ilda_header(FILE* ins, struct header_ilda* hdr);
+int read3_dt(struct point3_d_true* point, FILE* ins);
+int read2_dt(struct point2_d_true* point, FILE* ins);
+int read3_d(struct point3_d* point, FILE* ins);
+int read2_d(struct point2_d* point, FILE* ins);
+int read_palette(struct palette* point, FILE* ins);
 void read_ilda();
 
 
