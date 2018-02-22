@@ -47,6 +47,7 @@
 *.userosscache
 *.sln.docstates
 CPPLINT*
+config*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
