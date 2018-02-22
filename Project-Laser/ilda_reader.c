@@ -5,8 +5,17 @@
 
 #define HEADER_SIZE 32
 
-#define LITTLE_ENDIAN 1 //endianness of host
+/**
+ * \brief Host endianness. File is in big endian so then conversions are in order.
+ */
+#define LITTLE_ENDIAN 1
+/**
+ * \brief amount to shift least significant byte, for endianness conversions
+ */
 #define B 8*LITTLE_ENDIAN
+/**
+ * \brief amount to shift most significant byte, for endianness conversions
+ */
 #define L 8*(!LITTLE_ENDIAN)
 
 void print_header(struct header_ilda hdr);
@@ -169,7 +178,7 @@ void read_ilda() {
         exit(-1);
     }
 }
-void print_header(struct header_ilda hdr) {
+void print_header(const struct header_ilda hdr) {
     printf("%s\n%d\n%s\n%s\n%d\n%d\n%d\n%d\n", hdr.ilda, hdr.format_code, hdr.frame_name, hdr.company_name, hdr.number_of_records, hdr.frame_number, hdr.total_frames, hdr.proj_number);
     getchar();
 }
