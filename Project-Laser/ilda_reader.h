@@ -13,7 +13,7 @@
 typedef unsigned char byte;
 
 struct header_ilda {
-	char ilda[5];
+	char ilda[4];
 	byte format_code;
 	char frame_name[9];
 	char company_name[9];
@@ -67,13 +67,12 @@ struct point2_d_true {
 
 
 
-int read_ilda_header(FILE* ins, struct header_ilda* hdr);
+int read_ilda_header(struct header_ilda* hdr, FILE* ins);
 int read3_dt(struct point3_d_true* point, FILE* ins);
 int read2_dt(struct point2_d_true* point, FILE* ins);
 int read3_d(struct point3_d* point, FILE* ins);
 int read2_d(struct point2_d* point, FILE* ins);
 int read_palette(struct palette* point, FILE* ins);
 void read_ilda();
-
 
 #endif //PROJECT_LASER_ILDA_READER_H_

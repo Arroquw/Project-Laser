@@ -3,14 +3,18 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define HEADER_SIZE 32
-
 #define LITTLE_ENDIAN 1 //endianness of host
 #define B 8*LITTLE_ENDIAN
 #define L 8*(!LITTLE_ENDIAN)
 
 void print_header(struct header_ilda hdr);
 
+/**
+* \brief Reads from a file into a point3_d POD structure, should be called if format code '0' is encountered
+* \param point point3_d POD structure to read into. Does not need to be initialized.
+* \param ins File descriptor to read from. Needs to be opened in binary read mode
+* \return returns -1 on read failure and 0 on success.
+*/
 int read3_d(struct point3_d* point, FILE* ins) {
     uint8_t buffer[sizeof(struct point3_d)];
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
@@ -24,6 +28,12 @@ int read3_d(struct point3_d* point, FILE* ins) {
     return 0;
 }
 
+/**
+* \brief Reads from a file into a point2_d POD structure, should be called if format code '1' is encountered
+* \param point point2_d POD structure to read into. Does not need to be initialized.
+* \param ins File descriptor to read from. Needs to be opened in binary read mode
+* \return returns -1 on read failure and 0 on success.
+*/
 int read2_d(struct point2_d* point, FILE* ins) {
     uint8_t buffer[sizeof(struct point2_d)];
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
@@ -36,6 +46,12 @@ int read2_d(struct point2_d* point, FILE* ins) {
     return 0;
 }
 
+/**
+* \brief Reads from a file into a palette POD structure, should be called if format code '2' is encountered
+* \param point palette POD structure to read into. Does not need to be initialized.
+* \param ins File descriptor to read from. Needs to be opened in binary read mode
+* \return returns -1 on read failure and 0 on success.
+*/
 int read_palette(struct palette* point, FILE* ins) {
     uint8_t buffer[sizeof(struct palette)];
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
@@ -47,6 +63,12 @@ int read_palette(struct palette* point, FILE* ins) {
     return 0;
 }
 
+/**
+* \brief Reads from a file into a point3_d_true POD structure, should be called if format code '4' is encountered
+* \param point point3_d_true POD structure to read into. Does not need to be initialized.
+* \param ins File descriptor to read from. Needs to be opened in binary read mode
+* \return returns -1 on read failure and 0 on success.
+*/
 int read3_dt(struct point3_d_true* point, FILE* ins) {
     uint8_t buffer[sizeof(struct point3_d_true)];
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
@@ -60,6 +82,12 @@ int read3_dt(struct point3_d_true* point, FILE* ins) {
     return 0;
 }
 
+/**
+ * \brief Reads from a file into a point2_d_true POD structure, should be called if format code '5' is encountered
+ * \param point point2_d_true POD structure to read into. Does not need to be initialized.
+ * \param ins File descriptor to read from. Needs to be opened in binary read mode
+ * \return returns -1 on read failure and 0 on success.
+ */
 int read2_dt(struct point2_d_true* point, FILE* ins) {
     uint8_t buffer[sizeof(struct point2_d_true)];
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
@@ -72,104 +100,130 @@ int read2_dt(struct point2_d_true* point, FILE* ins) {
     return 0;
 }
 
-int read_ilda_header(FILE* ins, struct header_ilda *hdr) {
-    uint8_t buffer[HEADER_SIZE];
+/**
+ * \brief Puts ilda header information in the *hdr parameter from the ins* file.
+ * \param hdr ilda header POD structure to put data in. Does not need to be initialized.
+ * \param ins file descriptor to read from. Needs to be opened in binary read mode.
+ * \return returns 0 for success, -1 if read failed, 1 if ILDA header is not recognized and 2 if the final header has been found.
+ */
+int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
+    uint8_t buffer[32];
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
         return -1;
     }
-    memcpy(hdr->ilda, buffer, 4);   // first 4 characters contain ilda
-    hdr->ilda[4] = '\0';            // terminating null character for C-string
+    memcpy(hdr->ilda, buffer, sizeof hdr->ilda);   // first 4 characters contain ilda
+   // hdr->ilda[4] = '\0';            // terminating null character for C-string
+    if (strncmp(hdr->ilda, "ILDA", sizeof hdr->ilda) != 0) {
+        return 1;
+    }
     hdr->format_code = buffer[7];   // bytes 4 to 6 are reserved so continue on byte 7
-    memcpy(hdr->frame_name, buffer + 8, 8); // 8 ascii characters
+    if (hdr->format_code > 5) {
+        hdr->format_code = 0;
+    }
+    for(auto i = 8u; i < 8+sizeof hdr->frame_name || buffer[i] == '\0'; ++i) {
+        hdr->frame_name[i - 8] = buffer[i];
+    }
+    for (auto i = 16u; i < 16+sizeof hdr->frame_name || buffer[i] == '\0'; ++i) {
+        hdr->company_name[i - 16] = buffer[i];
+    }
     hdr->frame_name[8] = '\0';
-    memcpy(hdr->company_name, buffer + 16, 8);
     hdr->company_name[8] = '\0';
+
     hdr->number_of_records = buffer[24] << B | buffer[25] << L; // 16 bit integer with endian conversion, entire file is in big endian
+    if (hdr->number_of_records == 0) {
+        return 2;
+    }
     hdr->frame_number = buffer[26] << B | buffer[27] << L;  
     hdr->total_frames = buffer[28] << B | buffer[29] << L;
     hdr->proj_number = buffer[30];
     return 0;
 }
 
+/**
+ * \brief reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found.
+ */
 void read_ilda() {
     FILE* fp = fopen("../Ladylegs.ild", "rb");
     if (fp != NULL) {
         struct header_ilda hdr;
-        read_ilda_header(fp, &hdr);
-        print_header(hdr);
-        while (hdr.number_of_records != 0) {
-            switch (hdr.format_code) {
-            case 0:
-            {
-                struct point3_d point = { 0 };
-                for (; point.status_code >> 7 != 1;) {
-                    read3_d(&point, fp);
-                    printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
+        if (read_ilda_header(&hdr, fp) == 0) {
+            print_header(hdr);
+            while (hdr.number_of_records != 0) {
+                switch (hdr.format_code) {
+                case 0:
+                {
+                    struct point3_d point = { 0 };
+                    for (; point.status_code >> 7 != 1;) {
+                        read3_d(&point, fp);
+                        printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
-            }
-            case 1:
-            {
-                struct point2_d point = { 0 };
-                for (; point.status_code >> 7 != 1;) {
-                    read2_d(&point, fp);
-                    printf("x coord: %d\ny coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.status_code, point.color_index);
+                case 1:
+                {
+                    struct point2_d point = { 0 };
+                    for (; point.status_code >> 7 != 1;) {
+                        read2_d(&point, fp);
+                        printf("x coord: %d\ny coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.status_code, point.color_index);
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
-            }
-            case 2:
-            {
-                struct palette point = { 0 };
-                for (int i = 0; i < hdr.number_of_records; ++i) {
-                    read_palette(&point, fp);
-                    printf("blue: %d\ngreen: %d\nred: %d\n", point.blue, point.green, point.red);
+                case 2:
+                {
+                    struct palette point = { 0 };
+                    for (int i = 0; i < hdr.number_of_records; ++i) {
+                        read_palette(&point, fp);
+                        printf("blue: %d\ngreen: %d\nred: %d\n", point.blue, point.green, point.red);
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
-            }
-            case 4:
-            {
-                struct point3_d_true point = { 0 };
-                for (; point.status_code >> 7 != 1;) {
-                    read3_dt(&point, fp);
-                    printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
+                case 4:
+                {
+                    struct point3_d_true point = { 0 };
+                    for (; point.status_code >> 7 != 1;) {
+                        read3_dt(&point, fp);
+                        printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
 
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
-            }
-            case 5:
-            {
-                struct point2_d_true point = { 0 };
-                for (; point.status_code >> 7 != 1;) {
-                    read2_dt(&point, fp);
-                    printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                case 5:
+                {
+                    struct point2_d_true point = { 0 };
+                    for (; point.status_code >> 7 != 1;) {
+                        read2_dt(&point, fp);
+                        printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
+                default: break;
+                }
+                if (feof(fp)) {
+                    break;
+                } 
+                if (ferror(fp)) {
+                    break;
+                }
             }
-            default: break;
-            }
-            if (feof(fp)) {
-                break;
-            } else if (ferror(fp)) {
-                break;
-            }
+            fclose(fp);
+        } else {
+            printf("%s\n", "file not found");
+            exit(-1);
         }
-        fclose(fp);
-    } else {
-        printf("%s\n", "file not found");
-        exit(-1);
     }
 }
-void print_header(struct header_ilda hdr) {
+void print_header(const struct header_ilda hdr) {
+    getchar();
     printf("%s\n%d\n%s\n%s\n%d\n%d\n%d\n%d\n", hdr.ilda, hdr.format_code, hdr.frame_name, hdr.company_name, hdr.number_of_records, hdr.frame_number, hdr.total_frames, hdr.proj_number);
     getchar();
 }
