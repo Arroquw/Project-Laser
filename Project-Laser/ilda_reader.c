@@ -3,8 +3,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define HEADER_SIZE 32
+
 #define LITTLE_ENDIAN 1 //endianness of host
 #define B 8*LITTLE_ENDIAN
+/**
+ * \brief amount to shift most significant byte, for endianness conversions
+ */
 #define L 8*(!LITTLE_ENDIAN)
 
 void print_header(struct header_ilda hdr);
@@ -190,40 +195,37 @@ void read_ilda() {
                         read3_dt(&point, fp);
                         printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
 
-                    }
-                    read_ilda_header(&hdr, fp);
-                    print_header(hdr);
-                    break;
                 }
-                case 5:
-                {
-                    struct point2_d_true point = { 0 };
-                    for (; point.status_code >> 7 != 1;) {
-                        read2_dt(&point, fp);
-                        printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
-                    }
-                    read_ilda_header(&hdr, fp);
-                    print_header(hdr);
-                    break;
-                }
-                default: break;
-                }
-                if (feof(fp)) {
-                    break;
-                } 
-                if (ferror(fp)) {
-                    break;
-                }
+                read_ilda_header(fp, &hdr);
+                print_header(hdr);
+                break;
             }
-            fclose(fp);
-        } else {
-            printf("%s\n", "file not found");
-            exit(-1);
+            case 5:
+            {
+                struct point2_d_true point = { 0 };
+                for (; point.status_code >> 7 != 1;) {
+                    read2_dt(&point, fp);
+                    printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                }
+                read_ilda_header(fp, &hdr);
+                print_header(hdr);
+                break;
+            }
+            default: break;
+            }
+            if (feof(fp)) {
+                break;
+            } else if (ferror(fp)) {
+                break;
+            }
         }
+        fclose(fp);
+    } else {
+        printf("%s\n", "file not found");
+        exit(-1);
     }
 }
-void print_header(const struct header_ilda hdr) {
-    getchar();
+void print_header(struct header_ilda hdr) {
     printf("%s\n%d\n%s\n%s\n%d\n%d\n%d\n%d\n", hdr.ilda, hdr.format_code, hdr.frame_name, hdr.company_name, hdr.number_of_records, hdr.frame_number, hdr.total_frames, hdr.proj_number);
     getchar();
 }
