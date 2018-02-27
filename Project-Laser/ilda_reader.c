@@ -3,9 +3,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define HEADER_SIZE 32
-
+/**
+ * \brief since the file is in big endian, conversions have to be in place for little endian cpu's
+ */
 #define LITTLE_ENDIAN 1 //endianness of host
+
+/**
+ * \brief amount to shift least significant byte, for endianness conversions 
+ */
 #define B 8*LITTLE_ENDIAN
 /**
  * \brief amount to shift most significant byte, for endianness conversions
@@ -125,10 +130,10 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
     if (hdr->format_code > 5) {
         hdr->format_code = 0;
     }
-    for(auto i = 8u; i < 8+sizeof hdr->frame_name || buffer[i] == '\0'; ++i) {
+    for (auto i = 8u; i < 8 + sizeof hdr->frame_name || buffer[i] == '\0'; ++i) {
         hdr->frame_name[i - 8] = buffer[i];
     }
-    for (auto i = 16u; i < 16+sizeof hdr->frame_name || buffer[i] == '\0'; ++i) {
+    for (auto i = 16u; i < 16 + sizeof hdr->frame_name || buffer[i] == '\0'; ++i) {
         hdr->company_name[i - 16] = buffer[i];
     }
     hdr->frame_name[8] = '\0';
@@ -138,7 +143,7 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
     if (hdr->number_of_records == 0) {
         return 2;
     }
-    hdr->frame_number = buffer[26] << B | buffer[27] << L;  
+    hdr->frame_number = buffer[26] << B | buffer[27] << L;
     hdr->total_frames = buffer[28] << B | buffer[29] << L;
     hdr->proj_number = buffer[30];
     return 0;
@@ -148,7 +153,7 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
  * \brief reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found.
  */
 void read_ilda() {
-    FILE* fp = fopen("../Ladylegs.ild", "rb");
+    FILE* fp = fopen("../CanadaFlag.ild", "rb");
     if (fp != NULL) {
         struct header_ilda hdr;
         if (read_ilda_header(&hdr, fp) == 0) {
@@ -195,36 +200,39 @@ void read_ilda() {
                         read3_dt(&point, fp);
                         printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
 
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
-            }
-            case 5:
-            {
-                struct point2_d_true point = { 0 };
-                for (; point.status_code >> 7 != 1;) {
-                    read2_dt(&point, fp);
-                    printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                case 5:
+                {
+                    struct point2_d_true point = { 0 };
+                    for (; point.status_code >> 7 != 1;) {
+                        read2_dt(&point, fp);
+                        printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                    }
+                    read_ilda_header(&hdr, fp);
+                    print_header(hdr);
+                    break;
                 }
-                read_ilda_header(fp, &hdr);
-                print_header(hdr);
-                break;
+                default: break;
+                }
+                if (feof(fp)) {
+                    break;
+                } 
+                if (ferror(fp)) {
+                    break;
+                }
             }
-            default: break;
-            }
-            if (feof(fp)) {
-                break;
-            } else if (ferror(fp)) {
-                break;
-            }
+            fclose(fp);
+        } else {
+            printf("%s\n", "file not found");
+            exit(-1);
         }
-        fclose(fp);
-    } else {
-        printf("%s\n", "file not found");
-        exit(-1);
     }
 }
+
 void print_header(struct header_ilda hdr) {
     printf("%s\n%d\n%s\n%s\n%d\n%d\n%d\n%d\n", hdr.ilda, hdr.format_code, hdr.frame_name, hdr.company_name, hdr.number_of_records, hdr.frame_number, hdr.total_frames, hdr.proj_number);
     getchar();
