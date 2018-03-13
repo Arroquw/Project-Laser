@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <GL/freeglut.h>
 
 /**
  * \brief since the file is in big endian, conversions have to be in place for little endian cpu's
@@ -17,7 +18,7 @@
  */
 #define L 8*(!LITTLE_ENDIAN)
 
-void print_header(struct header_ilda hdr);
+void print_header(const struct header_ilda hdr);
 
 /**
 * \brief Reads from a file into a point3_d POD structure, should be called if format code '0' is encountered
@@ -121,12 +122,11 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
     if (fread(buffer, 1, sizeof buffer, ins) != sizeof buffer) {
         return -1;
     }
-    memcpy(hdr->ilda, buffer, sizeof hdr->ilda);   // first 4 characters contain ilda
-   // hdr->ilda[4] = '\0';            // terminating null character for C-string
+    memcpy(hdr->ilda, buffer, sizeof hdr->ilda);
     if (strncmp(hdr->ilda, "ILDA", sizeof hdr->ilda) != 0) {
         return 1;
     }
-    hdr->format_code = buffer[7];   // bytes 4 to 6 are reserved so continue on byte 7
+    hdr->format_code = buffer[7];
     if (hdr->format_code > 5) {
         hdr->format_code = 0;
     }
@@ -153,28 +153,67 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
  * \brief reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found.
  */
 void read_ilda() {
+    glClearColor(1.0, 1.0, 1.0, 1.0);  // clear background with black
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //gluOrtho2D(-32768, 32767, -32768, 32767);
+    glOrtho(-32768, 32767, -32768, 32767, 0, 32767);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glPointSize(1);
+    glColor3f(1.0, 0.0, 0.0);
+
     FILE* fp = fopen("../CanadaFlag.ild", "rb");
+    int n = 0;
+    FILE *x = fopen("xcoords.txt", "w");
+    FILE *y = fopen("ycoords.txt", "w");
+    FILE *z = fopen("zcoords.txt", "w");
     if (fp != NULL) {
         struct header_ilda hdr;
         if (read_ilda_header(&hdr, fp) == 0) {
-            print_header(hdr);
+            //print_header(hdr);
             while (hdr.number_of_records != 0) {
                 switch (hdr.format_code) {
                 case 0:
                 {
                     struct point3_d point = { 0 };
-                    for (; point.status_code >> 7 != 1;) {
+                   // glClear(GL_COLOR_BUFFER_BIT);
+                    glBegin(GL_LINE_STRIP);
+                    for (; (point.status_code >> 7 & 1) != 1;) {
                         read3_d(&point, fp);
-                        printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
+                        if (point.z_coord >= 1 || point.z_coord < 0) {
+                            //point.x_coord = point.x_coord / point.z_coord;
+                            //point.y_coord = point.y_coord / point.z_coord;
+                        }
+
+                        if (n >= 0 && n <= 25) {
+                            if((point.status_code >> 6 & 1) != 1)
+                                glVertex3s(point.x_coord, point.y_coord, point.z_coord);
+                        }
+
+                            //glVertex2s(point.x_coord, point.y_coord);
+
+                        fprintf(x, "%d ", point.x_coord);
+                        fprintf(y, "%d ", point.y_coord);
+                        fprintf(z, "%d ", point.z_coord);
+
+                        //printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
                     }
+                    n++;
+                    glEnd();
+                    glFlush();
                     read_ilda_header(&hdr, fp);
-                    print_header(hdr);
+                    //print_header(hdr);
                     break;
                 }
                 case 1:
                 {
                     struct point2_d point = { 0 };
-                    for (; point.status_code >> 7 != 1;) {
+                    for (; (point.status_code >> 7 & 1) != 1;) {
                         read2_d(&point, fp);
                         printf("x coord: %d\ny coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.status_code, point.color_index);
                     }
@@ -196,7 +235,7 @@ void read_ilda() {
                 case 4:
                 {
                     struct point3_d_true point = { 0 };
-                    for (; point.status_code >> 7 != 1;) {
+                    for (; (point.status_code >> 7 & 1) != 1;) {
                         read3_dt(&point, fp);
                         printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.colors.blue);
 
@@ -208,7 +247,7 @@ void read_ilda() {
                 case 5:
                 {
                     struct point2_d_true point = { 0 };
-                    for (; point.status_code >> 7 != 1;) {
+                    for (; (point.status_code >> 7&1) != 1;) {
                         read2_dt(&point, fp);
                         printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
                     }
@@ -226,14 +265,18 @@ void read_ilda() {
                 }
             }
             fclose(fp);
+            fclose(x);
+            fclose(y);
+            fclose(z);
         } else {
             printf("%s\n", "file not found");
             exit(-1);
         }
     }
+    glutSwapBuffers();
 }
 
-void print_header(struct header_ilda hdr) {
+void print_header(const struct header_ilda hdr) {
     printf("%s\n%d\n%s\n%s\n%d\n%d\n%d\n%d\n", hdr.ilda, hdr.format_code, hdr.frame_name, hdr.company_name, hdr.number_of_records, hdr.frame_number, hdr.total_frames, hdr.proj_number);
-    getchar();
+  //  getchar();
 }

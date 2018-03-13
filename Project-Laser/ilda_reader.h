@@ -11,7 +11,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-
 /**
  * \brief byte typedef
  */
@@ -98,6 +97,7 @@ int read2_dt(struct point2_d_true* point, FILE* ins);
 int read3_d(struct point3_d* point, FILE* ins);
 int read2_d(struct point2_d* point, FILE* ins);
 int read_palette(struct palette* point, FILE* ins);
+void render(int16_t x, int16_t y);
 void read_ilda();
 
 #endif //PROJECT_LASER_ILDA_READER_H_
