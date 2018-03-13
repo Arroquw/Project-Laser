@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <GL/freeglut.h>
 
 /**
  * \brief since the file is in big endian, conversions have to be in place for little endian cpu's
@@ -153,25 +152,8 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
  * \brief reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found.
  */
 void read_ilda() {
-    glClearColor(1.0, 1.0, 1.0, 1.0);  // clear background with black
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //gluOrtho2D(-32768, 32767, -32768, 32767);
-    glOrtho(-32768, 32767, -32768, 32767, 0, 32767);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glPointSize(1);
-    glColor3f(1.0, 0.0, 0.0);
-
     FILE* fp = fopen("../CanadaFlag.ild", "rb");
     int n = 0;
-    FILE *x = fopen("xcoords.txt", "w");
-    FILE *y = fopen("ycoords.txt", "w");
-    FILE *z = fopen("zcoords.txt", "w");
     if (fp != NULL) {
         struct header_ilda hdr;
         if (read_ilda_header(&hdr, fp) == 0) {
@@ -182,32 +164,12 @@ void read_ilda() {
                 {
                     struct point3_d point = { 0 };
                    // glClear(GL_COLOR_BUFFER_BIT);
-                    glBegin(GL_LINE_STRIP);
                     for (; (point.status_code >> 7 & 1) != 1;) {
                         read3_d(&point, fp);
-                        if (point.z_coord >= 1 || point.z_coord < 0) {
-                            //point.x_coord = point.x_coord / point.z_coord;
-                            //point.y_coord = point.y_coord / point.z_coord;
-                        }
-
-                        if (n >= 0 && n <= 25) {
-                            if((point.status_code >> 6 & 1) != 1)
-                                glVertex3s(point.x_coord, point.y_coord, point.z_coord);
-                        }
-
-                            //glVertex2s(point.x_coord, point.y_coord);
-
-                        fprintf(x, "%d ", point.x_coord);
-                        fprintf(y, "%d ", point.y_coord);
-                        fprintf(z, "%d ", point.z_coord);
-
                         //printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
                     }
                     n++;
-                    glEnd();
-                    glFlush();
                     read_ilda_header(&hdr, fp);
-                    //print_header(hdr);
                     break;
                 }
                 case 1:
@@ -265,15 +227,11 @@ void read_ilda() {
                 }
             }
             fclose(fp);
-            fclose(x);
-            fclose(y);
-            fclose(z);
         } else {
             printf("%s\n", "file not found");
             exit(-1);
         }
     }
-    glutSwapBuffers();
 }
 
 void print_header(const struct header_ilda hdr) {
