@@ -7,6 +7,12 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="angles.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -21,6 +27,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ilda_reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="angles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dac.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

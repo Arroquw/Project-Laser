@@ -146,10 +146,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="angles.c" />
+    <ClCompile Include="dac.c" />
     <ClCompile Include="ilda_reader.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="angles.h" />
+    <ClInclude Include="dac.h" />
     <ClInclude Include="ilda_reader.h" />
   </ItemGroup>
   <ItemGroup>

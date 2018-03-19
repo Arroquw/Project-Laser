@@ -157,19 +157,19 @@ void read_ilda() {
     if (fp != NULL) {
         struct header_ilda hdr;
         if (read_ilda_header(&hdr, fp) == 0) {
-            //print_header(hdr);
+            print_header(hdr);
             while (hdr.number_of_records != 0) {
                 switch (hdr.format_code) {
                 case 0:
                 {
                     struct point3_d point = { 0 };
-                   // glClear(GL_COLOR_BUFFER_BIT);
                     for (; (point.status_code >> 7 & 1) != 1;) {
                         read3_d(&point, fp);
-                        //printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
+                        printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
                     }
                     n++;
                     read_ilda_header(&hdr, fp);
+                    print_header(hdr);
                     break;
                 }
                 case 1:
