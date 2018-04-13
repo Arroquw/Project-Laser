@@ -5,15 +5,13 @@
  *      Author: Justi
  */
 
-#ifndef I2C_H_
-#define I2C_H_
 
 #ifndef I2C_H_
 #define I2C_H_
 
+void i2cInit();
+void startTransmit(int n);
+volatile int *get_busy();
 
-
-
-#endif /* I2C_H_ */
 
 #endif /* I2C_H_ */

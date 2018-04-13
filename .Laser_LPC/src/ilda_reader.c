@@ -18,7 +18,7 @@
  */
 #define L 8*(!LITTLE_ENDIAN)
 
-int16_t array[] = {0xAAAA, 0xFFFF, 0x5555, 0x1234, 0x4200};
+int16_t array[] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
 
 /**
  * \brief Reads from a file into a point3_d POD structure, should be called if format code '0' is encountered
@@ -140,7 +140,8 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
 	hdr->frame_name[8] = '\0';
 	hdr->company_name[8] = '\0';
 
-	hdr->number_of_records = buffer[24] << B | buffer[25] << L; // 16 bit integer with endian conversion, entire file is in big endian
+	hdr->number_of_records = buffer[24] << B | buffer[25] << L;
+	// 16 bit integer with endian conversion, entire file is in big endian
 	if (hdr->number_of_records == 0) {
 		return 2;
 	}
@@ -169,7 +170,6 @@ void read_ilda() {
 					struct point3_d point = { 0 };
 					for (; (point.status_code >> 7 & 1) != 1;) {
 						read3_d(&point, fp);
-						//write_output_DAC(point.x_coord);
 						printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
 					}
 					n++;

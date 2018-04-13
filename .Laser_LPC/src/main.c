@@ -1,12 +1,28 @@
 #include "ilda_reader.h"
 #include "dac.h"
+#include "i2c.h"
+#include "GPIO.h"
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
+	gpioInit();
 	i2cInit();
 
+	int n = 0;
+
+    gpio0WritePin(6, 0);
+	startTransmit(n);
+
 	while(1) {
-		startTransmit();
+//		if(!(*get_busy())) {
+//			if(n) {
+//				gpio0WritePin(6, 0);
+//				gpio0WritePin(6, 1);
+//			}
+//			startTransmit(n);
+//			n ^= 1;
+//
+//		}
 	}
 	return 0;
 }
