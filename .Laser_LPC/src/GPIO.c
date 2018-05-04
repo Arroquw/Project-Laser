@@ -101,6 +101,7 @@ uint32_t gpio2ReadPin(int8_t pinNr) {
 
 //Initialize GPIO pin's, all pin's are output.
 void gpioInit() {
+	PINMODE1 |= (3 << 10);
 	FIO0DIR0 |= 0xFF;
 	FIO0DIR1 |= 0xFF;
 	FIO0DIR2 |= 0xFF;

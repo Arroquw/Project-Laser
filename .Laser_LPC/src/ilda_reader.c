@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #include "dac.h"
+
+#define M_PI 3.1415926535897932384626433832795L
 
 /**
  * \brief since the file is in big endian, conversions have to be in place for little endian cpu's
@@ -18,7 +21,17 @@
  */
 #define L 8*(!LITTLE_ENDIAN)
 
-int16_t array[] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
+uint16_t array2[1024];
+uint16_t array1[1024];
+
+void generateSine() {
+	double sine[1024];
+	for(int i = 0; i < 1024; i++) {
+		sine[i] = sin(2*M_PI*5*i/204);
+		array2[i] = 32768 + sine[i] * 32767;
+		array1[i] = -array2[i];
+	}
+}
 
 /**
  * \brief Reads from a file into a point3_d POD structure, should be called if format code '0' is encountered
@@ -241,18 +254,36 @@ void read_ilda() {
 	}
 }
 
-int8_t getDataByte(int cnt){
+uint8_t getDataByte1(int cnt){
 	static int counter = 0;
-	if(counter > sizeof array){
+	if(counter >= sizeof array1/sizeof array1[0]){
 		counter = 0;
 	}
 
-	int8_t respond;
+	uint8_t respond;
 	if(!cnt){
-		respond = (array[counter] >> 8) & 0xFF;
+		respond = (array1[counter] >> 8) & 0xFF;
 	}else{
-		respond = (array[counter] & 0xFF);
+		respond = (array1[counter] & 0xFF);
+		counter++;
 	}
-	counter++;
+
+	return respond;
+}
+
+uint8_t getDataByte2(int cnt) {
+	static int counter = 0;
+	if(counter >= sizeof array2/sizeof array2[0]){
+		counter = 0;
+	}
+
+	uint8_t respond;
+	if(!cnt){
+		respond = (array2[counter] >> 8) & 0xFF;
+	}else{
+		respond = (array2[counter] & 0xFF);
+		counter++;
+	}
+
 	return respond;
 }
