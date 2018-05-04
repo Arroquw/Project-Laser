@@ -5,11 +5,11 @@
  * Generated linker script file for LPC1769
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.23
- * LPCXpresso v8.2.2 [Build 650] [2016-09-09]  on 12-Apr-2018 14:13:23
+ * LPCXpresso v8.2.2 [Build 650] [2016-09-09]  on 04-May-2018 14:54:12
  */
 
-INCLUDE "Project_Laser_Debug_library.ld"
-INCLUDE "Project_Laser_Debug_memory.ld"
+INCLUDE "Laser_Debug_library.ld"
+INCLUDE "Laser_Debug_memory.ld"
 
 ENTRY(ResetISR)
 

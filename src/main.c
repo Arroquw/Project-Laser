@@ -7,22 +7,16 @@
 int main(int argc, char* argv[]) {
 	gpioInit();
 	i2cInit();
-
+	generateSine();
 	int n = 0;
-
-    gpio0WritePin(6, 0);
-	startTransmit(n);
-
+	gpio0WritePin(21, 0);
+	gpio0WritePin(22, 1);
 	while(1) {
-//		if(!(*get_busy())) {
-//			if(n) {
-//				gpio0WritePin(6, 0);
-//				gpio0WritePin(6, 1);
-//			}
-//			startTransmit(n);
-//			n ^= 1;
-//
-//		}
+		startTransmit(n);
+		if(n) {
+
+		}
+		n ^= 1;
 	}
 	return 0;
 }

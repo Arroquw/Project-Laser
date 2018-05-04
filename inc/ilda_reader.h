@@ -99,6 +99,8 @@ int read2_d(struct point2_d* point, FILE* ins);
 int read_palette(struct palette* point, FILE* ins);
 void render(int16_t x, int16_t y);
 void read_ilda();
-int8_t getDataByte(int cnt);
+uint8_t getDataByte1(int cnt);
+uint8_t getDataByte2(int cnt);
+void generateSine();
 
 #endif //PROJECT_LASER_ILDA_READER_H_
