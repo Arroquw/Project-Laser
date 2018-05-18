@@ -152,8 +152,14 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
  * \brief reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found.
  */
 void read_ilda() {
-    FILE* fp = fopen("../CanadaFlag.ild", "rb");
+    FILE* fp = fopen("../example.ild", "rb");
+    FILE* new_file = fopen("example.h", "w");
+    FILE* new_image = fopen("image.h", "w");
+
+    int16_t *y_coords = NULL;
+    int16_t *x_coords = NULL;
     int n = 0;
+    int array_size=0;
     if (fp != NULL) {
         struct header_ilda hdr;
         if (read_ilda_header(&hdr, fp) == 0) {
@@ -162,10 +168,17 @@ void read_ilda() {
                 switch (hdr.format_code) {
                 case 0:
                 {
+                    array_size = hdr.number_of_records;
+                    x_coords = malloc(hdr.number_of_records * sizeof x_coords[0]);
+                    y_coords = malloc(hdr.number_of_records * sizeof y_coords[0]);
                     struct point3_d point = { 0 };
+                    int i = 0;
                     for (; (point.status_code >> 7 & 1) != 1;) {
                         read3_d(&point, fp);
                         printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
+                        x_coords[i] = point.x_coord;
+                        y_coords[i] = point.y_coord;
+                        ++i;
                     }
                     n++;
                     read_ilda_header(&hdr, fp);
@@ -208,10 +221,17 @@ void read_ilda() {
                 }
                 case 5:
                 {
+                    array_size = hdr.number_of_records;
+                    x_coords = malloc(hdr.number_of_records * sizeof x_coords[0]);
+                    y_coords = malloc(hdr.number_of_records * sizeof y_coords[0]);
+                    int i = 0;
                     struct point2_d_true point = { 0 };
                     for (; (point.status_code >> 7&1) != 1;) {
                         read2_dt(&point, fp);
                         printf("x coord: %d\ny coord: %d\nstatus code: %d\nblue: %d\n", point.x_coord, point.y_coord, point.status_code, point.colors.blue);
+                        x_coords[i] = point.x_coord;
+                        y_coords[i] = point.y_coord;
+                        ++i;
                     }
                     read_ilda_header(&hdr, fp);
                     print_header(hdr);
@@ -227,6 +247,23 @@ void read_ilda() {
                 }
             }
             fclose(fp);
+            fprintf(new_file, "%s", "#ifndef EXAMPLE_H_\n#define EXAMPLE_H_\nextern int16_t image[];\n#endif");
+            fprintf(new_image, "%s", "int16_t image_x[] = {");
+            for(int i = 0; i < array_size-1; ++i) {
+                fprintf(new_image, "%d, ", x_coords[i]);
+            }
+            fprintf(new_image, "%d", x_coords[array_size]);
+            fprintf(new_image, "%s", "};");
+            fprintf(new_image, "%s", "int16_t image_y[] = {");
+            for (int i = 0; i < array_size-1; ++i) {
+                fprintf(new_image, "%d, ", y_coords[i]);
+            }
+            fprintf(new_image, "%d", y_coords[array_size]);
+            fprintf(new_image, "%s", "};");
+            free(x_coords);
+            free(y_coords);
+            fclose(new_file);
+            fclose(new_image);
         } else {
             printf("%s\n", "file not found");
             exit(-1);
