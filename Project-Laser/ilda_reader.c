@@ -11,11 +11,11 @@
 /**
  * \brief amount to shift least significant byte, for endianness conversions 
  */
-#define B 8*LITTLE_ENDIAN
+#define B (8*LITTLE_ENDIAN)
 /**
  * \brief amount to shift most significant byte, for endianness conversions
  */
-#define L 8*(!LITTLE_ENDIAN)
+#define L (8*(!LITTLE_ENDIAN))
 
 void print_header(const struct header_ilda hdr);
 
@@ -152,21 +152,19 @@ int read_ilda_header(struct header_ilda *hdr, FILE* ins) {
  * \brief reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found.
  */
 void read_ilda() {
-    FILE* fp = fopen("../CanadaFlag.ild", "rb");
+    FILE* fp = fopen("../CanadaFlag.ild", "rb");  // NOLINT(android-cloexec-fopen)
     int n = 0;
     if (fp != NULL) {
-        struct header_ilda hdr;
+		struct header_ilda hdr = { 0 };
         if (read_ilda_header(&hdr, fp) == 0) {
-            //print_header(hdr);
             while (hdr.number_of_records != 0) {
                 switch (hdr.format_code) {
                 case 0:
                 {
                     struct point3_d point = { 0 };
-                   // glClear(GL_COLOR_BUFFER_BIT);
                     for (; (point.status_code >> 7 & 1) != 1;) {
                         read3_d(&point, fp);
-                        //printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
+                        printf("x coord: %d\ny coord: %d\nz_coord: %d\nstatus code: %d\ncolor index: %d\n", point.x_coord, point.y_coord, point.z_coord, point.status_code, point.color_index);
                     }
                     n++;
                     read_ilda_header(&hdr, fp);
