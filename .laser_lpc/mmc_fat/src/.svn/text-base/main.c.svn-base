@@ -1,0 +1,174 @@
+/*****************************************************************************
+ *   This example shows how to access an MMC/SD card
+ *
+ *   Copyright(C) 2010, Embedded Artists AB
+ *   All rights reserved.
+ *
+ ******************************************************************************/
+
+#include "lpc17xx_pinsel.h"
+#include "lpc17xx_gpio.h"
+#include "lpc17xx_ssp.h"
+//#include "lpc17xx_uart.h"
+#include "lpc17xx_timer.h"
+#include "stdio.h"
+
+#include "diskio.h"
+#include "ff.h"
+
+#include <cr_section_macros.h>
+#include <NXP/crp.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#include "lpc17xx.h"
+#include "type.h"
+#include "uart.h"
+#include "timer.h"
+
+#define UART_DEV LPC_UART3
+
+static FILINFO Finfo;
+static FATFS Fatfs[1];
+static uint8_t buf[64];
+static FIL File ;
+static	BYTE buffer[20];   /* file copy buffer */
+static  UINT br, bw, btw;         /* File read/write count */
+
+
+/*static void init_uart(void)
+{
+	PINSEL_CFG_Type PinCfg;
+//	UART_CFG_Type uartCfg;
+
+	/* Initialize UART3 pin connect
+	PinCfg.Funcnum = 2;
+	PinCfg.Pinnum = 0;
+	PinCfg.Portnum = 0;
+	PINSEL_ConfigPin(&PinCfg);
+	PinCfg.Pinnum = 1;
+	PINSEL_ConfigPin(&PinCfg);
+
+	uartCfg.Baud_rate = 115200;
+	uartCfg.Databits = UART_DATABIT_8;
+	uartCfg.Parity = UART_PARITY_NONE;
+	uartCfg.Stopbits = UART_STOPBIT_1;
+
+	UART_Init(UART_DEV, &uartCfg);
+
+	UART_TxCmd(UART_DEV, ENABLE);
+
+}		*/
+
+
+static void init_ssp(void)
+{
+	SSP_CFG_Type SSP_ConfigStruct;
+	PINSEL_CFG_Type PinCfg;
+
+	/*
+	 * Initialize SPI pin connect
+	 * P0.7 - SCK;
+	 * P0.8 - MISO
+	 * P0.9 - MOSI
+	 * P2.2 - SSEL - used as GPIO
+	 */
+	PinCfg.Funcnum = 2;
+	PinCfg.OpenDrain = 0;
+	PinCfg.Pinmode = 0;
+	PinCfg.Portnum = 0;
+	PinCfg.Pinnum = 7;
+	PINSEL_ConfigPin(&PinCfg);
+	PinCfg.Pinnum = 8;
+	PINSEL_ConfigPin(&PinCfg);
+	PinCfg.Pinnum = 9;
+	PINSEL_ConfigPin(&PinCfg);
+	PinCfg.Funcnum = 0;
+	PinCfg.Portnum = 2;
+	PinCfg.Pinnum = 2;
+	PINSEL_ConfigPin(&PinCfg);
+
+	SSP_ConfigStructInit(&SSP_ConfigStruct);
+
+	// Initialize SSP peripheral with parameter given in structure above
+	SSP_Init(LPC_SSP1, &SSP_ConfigStruct);
+
+	// Enable SSP peripheral
+	SSP_Cmd(LPC_SSP1, ENABLE);
+
+}
+
+void SysTick_Handler(void)
+{
+    disk_timerproc();
+}
+
+int main (void)
+{
+
+    DSTATUS stat;
+    DWORD p2, temp;
+    WORD w1;
+    BYTE res, b1;
+    DIR dir;
+    BYTE  Float_STR[10] ;
+    float temp_f ;
+    FIL * fpp ;
+
+    int i = 0;
+
+    LPC_SC->PCONP     = 0x072887DE;        /* Power Control for Peripherals   test command   */
+    									/* this will power up UART 0,1,2*/
+    SystemClockUpdate();
+
+    UARTInit(1, 57600);	/* baud rate setting */
+
+    init_ssp();							/* this will power up appropriate peripherals for SSP*/
+
+    delayMs(0,700) ;
+    stat = disk_initialize(0);
+
+    res = f_mount(0, &Fatfs[0]);
+
+     res = f_mount(0, &Fatfs[0]);
+    if (res != FR_OK)
+    {
+        i = sprintf((char*)buf, "Failed to mount 0: %d \r\n", res);
+     //   UART_Send(UART_DEV, buf, i, BLOCKING);
+        return 1;
+    }
+
+    while( (res = f_open(&File, "data.txt", FA_OPEN_EXISTING | FA_READ | FA_WRITE)) == 0)
+    {
+    fpp = &File ;
+
+ //   res = f_read(&File, buffer, sizeof(buffer), &br);    /* Read a chunk of src file */
+
+    res = f_lseek(&File, fpp->fsize);
+
+    for (temp=0; temp < 50; temp++)
+    {
+    	temp_f = temp  ;
+    sprintf(Float_STR,"%3.2f\r\n", temp_f ) ;
+
+      res = f_write(&File,Float_STR,(BYTE)sizeof(Float_STR),&btw ) ;
+      delayMs(0,1) ;
+    }
+      res = f_close(&File)  ;
+    }
+
+
+
+return(1);
+}
+
+
+void check_failed(uint8_t *file, uint32_t line)
+{
+	/* User can add his own implementation to report the file name and line number,
+	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+
+	/* Infinite loop */
+	while(1);
+}

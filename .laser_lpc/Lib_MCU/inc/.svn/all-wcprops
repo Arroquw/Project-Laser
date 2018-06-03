@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc
+END
+lpc17xx_pwm.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_pwm.h
+END
+lpc17xx_emac.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_emac.h
+END
+lpc17xx_ssp.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_ssp.h
+END
+lpc_types.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc_types.h
+END
+lpc17xx_i2c.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_i2c.h
+END
+lpc17xx_qei.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_qei.h
+END
+lpc17xx_timer.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_timer.h
+END
+lpc17xx_mcpwm.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_mcpwm.h
+END
+lpc17xx_dac.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_dac.h
+END
+lpc17xx_adc.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_adc.h
+END
+lpc17xx_gpdma.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_gpdma.h
+END
+lpc17xx_rtc.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_rtc.h
+END
+lpc17xx_pinsel.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_pinsel.h
+END
+lpc17xx_libcfg_default.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_libcfg_default.h
+END
+lpc17xx_spi.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_spi.h
+END
+lpc17xx_i2s.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_i2s.h
+END
+lpc17xx_gpio.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_gpio.h
+END
+lpc17xx_rit.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_rit.h
+END
+lpc17xx_wdt.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_wdt.h
+END
+lpc17xx_nvic.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_nvic.h
+END
+lpc17xx_can.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_can.h
+END
+lpc17xx_clkpwr.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/Lib_MCU/inc/lpc17xx_clkpwr.h
+END

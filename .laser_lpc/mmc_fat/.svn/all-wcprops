@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/mmc_fat
+END
+mmc_fat Release.launch
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/mmc_fat/mmc_fat%20Release.launch
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/mmc_fat/.project
+END
+mmc_fat Debug.launch
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/mmc_fat/mmc_fat%20Debug.launch
+END
+.cproject
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/mmc_fat/.cproject
+END
+readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/control_system_code_online/!svn/ver/27/LPC1769_Wind/mmc_fat/readme.txt
+END
