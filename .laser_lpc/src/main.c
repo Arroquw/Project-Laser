@@ -2,10 +2,11 @@
 #include "dac.h"
 #include "i2c.h"
 #include "GPIO.h"
+#include "demo.h"
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
-	gpioInit();
+ 	gpioInit();
 	i2cInit();
 	generateSine();
 	int n = 0;
@@ -13,10 +14,6 @@ int main(int argc, char* argv[]) {
 	gpio0WritePin(22, 1);
 	while(1) {
 		startTransmit(n);
-		if(n) {
-			gpio0WritePin(22, 0);
-			gpio0WritePin(22, 1);
-		}
 		n ^= 1;
 	}
 	return 0;

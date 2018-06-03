@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{680424EE-7500-431B-AAB1-422C76B1A329}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Project-Laser</RootNamespace>
-    <ProjectName>Project-Laser</ProjectName>
+    <RootNamespace>IldaReader</RootNamespace>
+    <ProjectName>IldaReader</ProjectName>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

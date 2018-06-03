@@ -2,11 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
-#include "dac.h"
 #include "image.h"
-
-#define M_PI 3.1415926535897932384626433832795L
 
 /**
  * \brief since the file is in big endian, conversions have to be in place for little endian cpu's
@@ -21,31 +17,6 @@
  * \brief amount to shift most significant byte, for endianness conversions
  */
 #define L 8*(!LITTLE_ENDIAN)
-
-uint16_t array2[1000];
-uint16_t array1[1000];
-
-void generateSine() {
-
-//	array1[0] = 0;
-//	array2[0] = 0;
-//	array1[1] = 65000;
-//	array2[1] = 0;
-//	array1[2] = 65000;
-//	array2[2] = 65000;
-//	array1[3] = 0;
-//	array2[3] = 65000;
-
-
-
-	double sine[1024];
-	for(int i = 0; i < 1000; i++) {
-		sine[i] = sin(2*M_PI*2000*i/8000);
-		array2[i] = 32768 + sine[i] * 32767;
-		sine[i] = cos(2*M_PI*2000*i/8000);
-		array1[i] = 32768 + sine[i] * 32767;
-	}
-}
 
 /**
  * \brief Reads from a file into a point3_d POD structure, should be called if format code '0' is encountered
@@ -266,56 +237,4 @@ void read_ilda() {
 		printf("%s\n", "file not found");
 		exit(-1);
 	}
-}
-
-uint8_t getDataByte1(int cnt){
-	static int counter = 0;
-//	if(counter >= sizeof array1/sizeof array1[0]){
-//		counter = 0;
-//	}
-	if(counter >= sizeof(image_x)/sizeof(image_x[0])) {
-		counter = 0;
-	}
-	uint16_t tmp = (image_y[counter] + 32768);
-	uint8_t respond;
-	if(!cnt) {
-		respond = (tmp >> 8) & 0xFF;
-	} else {
-		respond = (tmp & 0xFF);
-		counter++;
-	}
-//	if(!cnt){
-//		respond = (array1[counter] >> 8) & 0xFF;
-//	}else{
-//		respond = (array1[counter] & 0xFF);
-//		counter++;
-//	}
-
-	return respond;
-}
-
-uint8_t getDataByte2(int cnt) {
-	static int counter = 0;
-//	if(counter >= sizeof array2/sizeof array2[0]){
-//		counter = 0;
-//	}
-	if(counter >= sizeof(image_y)/sizeof(image_y[0])) {
-		counter = 0;
-	}
-	uint16_t tmp = (image_y[counter] + 32768);
-	uint8_t respond;
-	if(!cnt) {
-		respond = (tmp >> 8) & 0xFF;
-	} else {
-		respond = (tmp & 0xFF);
-		counter++;
-	}
-//	if(!cnt){
-//		respond = (array2[counter] >> 8) & 0xFF;
-//	}else{
-//		respond = (array2[counter] & 0xFF);
-//		counter++;
-//	}
-
-	return respond;
 }

@@ -1,5 +1,5 @@
 #include "i2c.h"
-#include "ilda_reader.h"
+#include "demo.h"
 #include "GPIO.h"
 #include <stdint.h>
 
@@ -61,10 +61,11 @@ void I2C0_IRQHandler(void) {
 		I2C0CONCLR = SIC;
 	case 0x28:
 		if (dataByteNr < 2) {
-			if (command)
+			if (!!command) {
 				I2C0DAT = getDataByte2(dataByteNr);
-			else
+			} else {
 				I2C0DAT = getDataByte1(dataByteNr);
+			}
 			dataByteNr++;
 		} else {
 			I2C0CONSET = STO;
@@ -73,6 +74,8 @@ void I2C0_IRQHandler(void) {
 			command = 0;
 		}
 		I2C0CONCLR = SIC;
+		gpio0WritePin(22, 1);
+		gpio0WritePin(22, 0);
 		break;
 	case 0x30:
 		I2C0CONSET = STO;

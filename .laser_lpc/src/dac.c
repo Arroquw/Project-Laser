@@ -1,8 +1,8 @@
 /*
- * testsignaal.h
+ * dac.c
  *
- *  Created on: 15 feb. 2017
- *      Author: stefa
+ * used to control the LPC1769's internal DAC
+ *
  */
 #include "dac.h"
 
