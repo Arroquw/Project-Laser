@@ -1,0 +1,3 @@
+[submodule "Laser_LPC"]
+	path = Laser_LPC
+	url = https://github.com/Arroquw/Laser_LPC.git

@@ -10,11 +10,17 @@
 #define PROJECT_LASER_ILDA_READER_H_
 #include <stdint.h>
 #include <stdio.h>
+
+/**
+ * \brief byte typedef
+ */
 typedef unsigned char byte;
 
+/**
+ * \brief Data structure which contains the ilda header fields
+ */
 struct header_ilda {
-	char ilda[5];
-	byte reserved[3];
+	char ilda[4];
 	byte format_code;
 	char frame_name[9];
 	char company_name[9];
@@ -22,21 +28,30 @@ struct header_ilda {
 	uint16_t frame_number;
 	uint16_t total_frames;
 	byte proj_number;
-	byte future;
 };
 
+
+/**
+ * \brief Colour data structure for the true colour formats
+ */
 struct true_color {
 	byte blue;
 	byte green;
 	byte red;
 };
 
+/**
+ * \brief format 2, colour palette for the formats using colour index
+ */
 struct palette {
 	byte blue;
 	byte green;
 	byte red;
 };
 
+/**
+ * \brief format 1, size of 6 bytes. 2D point with colour index
+ */
 struct point2_d {
 	int16_t x_coord;
 	int16_t y_coord;
@@ -44,6 +59,9 @@ struct point2_d {
 	byte color_index;
 };
 
+/**
+ * \brief format 0, size of 8 bytes. 3D point with colour index
+ */
 struct point3_d {
 	int16_t x_coord;
 	int16_t y_coord;
@@ -52,6 +70,9 @@ struct point3_d {
 	byte color_index;
 };
 
+/**
+ * \brief format 4, size of 10 bytes. 3D point with true colour structure.
+ */
 struct point3_d_true {
     int16_t x_coord;
     int16_t y_coord;
@@ -60,6 +81,9 @@ struct point3_d_true {
     struct true_color colors;
 };
 
+/**
+ * \brief format 5, size of 8 bytes. 2D point with true colour structure
+ */
 struct point2_d_true {
 	int16_t x_coord;
 	int16_t y_coord;
@@ -67,15 +91,13 @@ struct point2_d_true {
 	struct true_color colors;
 };
 
-
-
-void read_ilda_header(FILE* ins, struct header_ilda* hdr);
-void read3_dt(struct point3_d_true* point, FILE* ins);
-void read2_dt(struct point2_d_true* point, FILE* ins);
-void read3_d(struct point3_d* point, FILE* ins);
-void read2_d(struct point2_d* point, FILE* ins);
-void read_palette(struct palette* point, FILE* ins);
+int read_ilda_header(struct header_ilda* hdr, FILE* ins);
+int read3_dt(struct point3_d_true* point, FILE* ins);
+int read2_dt(struct point2_d_true* point, FILE* ins);
+int read3_d(struct point3_d* point, FILE* ins);
+int read2_d(struct point2_d* point, FILE* ins);
+int read_palette(struct palette* point, FILE* ins);
+void render(int16_t x, int16_t y);
 void read_ilda();
-
 
 #endif //PROJECT_LASER_ILDA_READER_H_

@@ -47,6 +47,7 @@
 *.userosscache
 *.sln.docstates
 CPPLINT*
+config*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -62,6 +63,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Ll]atex/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -329,6 +331,38 @@ __pycache__/
 ### VisualStudio Patch ###
 # By default, sensitive information, such as encrypted password
 # should be stored in the .pubxml.user file.
+
+#General build artifacts
+*.mk
+*.o
+*.a
+*.elf
+*.hex
+*.axf
+*.d
+*.lst
+*.map
+*.plg
+*.lnp
+*.crf
+*.tra
+*.sct
+*.bak
+*.dep
+
+#MDK-ARM
+*.__i
+*.htm
+*.uvgui.*
+*.uvopt
+*.axf
+
+#Eclipse
+.metadata
+
+#Mac
+.DS_Store
+
 
 
 # End of https://www.gitignore.io/api/c++,visualstudio

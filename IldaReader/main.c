@@ -2,6 +2,6 @@
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
-	read_ilda();
+    read_ilda();
 	getchar();
 }

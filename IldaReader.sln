@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2000
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IldaReader", "Project-Laser\Project-Laser.vcxproj", "{680424EE-7500-431B-AAB1-422C76B1A329}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IldaReader", "IldaReader\IldaReader.vcxproj", "{680424EE-7500-431B-AAB1-422C76B1A329}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,8 +24,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3A606471-9B9B-403E-88A8-BA5DC05F88BF}
 	EndGlobalSection
 EndGlobal
