@@ -1,0 +1,218 @@
+\hypertarget{ilda__reader_8c}{}\subsection{ilda\+\_\+reader.\+c File Reference}
+\label{ilda__reader_8c}\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+{\ttfamily \#include \char`\"{}ilda\+\_\+reader.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+Include dependency graph for ilda\+\_\+reader.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{ilda__reader_8c__incl}
+\end{center}
+\end{figure}
+\subsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{ilda__reader_8c_a8782a401fbf55261460863fc2f8df1ce}{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN}~1
+\begin{DoxyCompactList}\small\item\em since the file is in big endian, conversions have to be in place for little endian cpu\textquotesingle{}s \end{DoxyCompactList}\item 
+\#define \hyperlink{ilda__reader_8c_a111da81ae5883147168bbb8366377b10}{B}~8$\ast$\hyperlink{ilda__reader_8c_a8782a401fbf55261460863fc2f8df1ce}{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN}
+\begin{DoxyCompactList}\small\item\em amount to shift least significant byte, for endianness conversions \end{DoxyCompactList}\item 
+\#define \hyperlink{ilda__reader_8c_aa73214aa5f2f94f63d90bb4e3d99fe53}{L}~8$\ast$(!\hyperlink{ilda__reader_8c_a8782a401fbf55261460863fc2f8df1ce}{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN})
+\begin{DoxyCompactList}\small\item\em amount to shift most significant byte, for endianness conversions \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{ilda__reader_8c_af9fce4ec98c31e5a017b793e5f89a9e0}{print\+\_\+header} (struct \hyperlink{structheader__ilda}{header\+\_\+ilda} hdr)
+\item 
+int \hyperlink{ilda__reader_8c_acfc7598b101bc5f6551e0eba6079cca5}{read3\+\_\+d} (struct \hyperlink{structpoint3__d}{point3\+\_\+d} $\ast$point, F\+I\+LE $\ast$ins)
+\begin{DoxyCompactList}\small\item\em Reads from a file into a \hyperlink{structpoint3__d}{point3\+\_\+d} P\+OD structure, should be called if format code \textquotesingle{}0\textquotesingle{} is encountered. \end{DoxyCompactList}\item 
+int \hyperlink{ilda__reader_8c_a6ccfb058e3e717fc6b62a16975aae044}{read2\+\_\+d} (struct \hyperlink{structpoint2__d}{point2\+\_\+d} $\ast$point, F\+I\+LE $\ast$ins)
+\begin{DoxyCompactList}\small\item\em Reads from a file into a \hyperlink{structpoint2__d}{point2\+\_\+d} P\+OD structure, should be called if format code \textquotesingle{}1\textquotesingle{} is encountered. \end{DoxyCompactList}\item 
+int \hyperlink{ilda__reader_8c_a620cfa9600a541d1c512b0ef7a63b92b}{read\+\_\+palette} (struct \hyperlink{structpalette}{palette} $\ast$point, F\+I\+LE $\ast$ins)
+\begin{DoxyCompactList}\small\item\em Reads from a file into a palette P\+OD structure, should be called if format code \textquotesingle{}2\textquotesingle{} is encountered. \end{DoxyCompactList}\item 
+int \hyperlink{ilda__reader_8c_ad8543fa23af10e3cdbe44e62c66556a1}{read3\+\_\+dt} (struct \hyperlink{structpoint3__d__true}{point3\+\_\+d\+\_\+true} $\ast$point, F\+I\+LE $\ast$ins)
+\begin{DoxyCompactList}\small\item\em Reads from a file into a \hyperlink{structpoint3__d__true}{point3\+\_\+d\+\_\+true} P\+OD structure, should be called if format code \textquotesingle{}4\textquotesingle{} is encountered. \end{DoxyCompactList}\item 
+int \hyperlink{ilda__reader_8c_a42c4a3d0ee1c18a464bf952ab9e6e73d}{read2\+\_\+dt} (struct \hyperlink{structpoint2__d__true}{point2\+\_\+d\+\_\+true} $\ast$point, F\+I\+LE $\ast$ins)
+\begin{DoxyCompactList}\small\item\em Reads from a file into a \hyperlink{structpoint2__d__true}{point2\+\_\+d\+\_\+true} P\+OD structure, should be called if format code \textquotesingle{}5\textquotesingle{} is encountered. \end{DoxyCompactList}\item 
+int \hyperlink{ilda__reader_8c_a658cb1acb17941afee94de570f2197b8}{read\+\_\+ilda\+\_\+header} (struct \hyperlink{structheader__ilda}{header\+\_\+ilda} $\ast$hdr, F\+I\+LE $\ast$ins)
+\begin{DoxyCompactList}\small\item\em Puts ilda header information in the {\itshape hdr parameter from the ins} file. \end{DoxyCompactList}\item 
+void \hyperlink{ilda__reader_8c_a370b6a4c6d690796ef6e62ff7b2e5f94}{read\+\_\+ilda} ()
+\begin{DoxyCompactList}\small\item\em reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsubsection{Macro Definition Documentation}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!B@{B}}
+\index{B@{B}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{B}{B}}]{\setlength{\rightskip}{0pt plus 5cm}\#define B~8$\ast${\bf L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN}}\hypertarget{ilda__reader_8c_a111da81ae5883147168bbb8366377b10}{}\label{ilda__reader_8c_a111da81ae5883147168bbb8366377b10}
+
+
+amount to shift least significant byte, for endianness conversions 
+
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!L@{L}}
+\index{L@{L}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{L}{L}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L~8$\ast$(!{\bf L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN})}\hypertarget{ilda__reader_8c_aa73214aa5f2f94f63d90bb4e3d99fe53}{}\label{ilda__reader_8c_aa73214aa5f2f94f63d90bb4e3d99fe53}
+
+
+amount to shift most significant byte, for endianness conversions 
+
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN@{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN}}
+\index{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN@{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN}{LITTLE_ENDIAN}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+I\+T\+T\+L\+E\+\_\+\+E\+N\+D\+I\+AN~1}\hypertarget{ilda__reader_8c_a8782a401fbf55261460863fc2f8df1ce}{}\label{ilda__reader_8c_a8782a401fbf55261460863fc2f8df1ce}
+
+
+since the file is in big endian, conversions have to be in place for little endian cpu\textquotesingle{}s 
+
+
+
+\subsubsection{Function Documentation}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!print\+\_\+header@{print\+\_\+header}}
+\index{print\+\_\+header@{print\+\_\+header}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{print\+\_\+header(struct header\+\_\+ilda hdr)}{print_header(struct header_ilda hdr)}}]{\setlength{\rightskip}{0pt plus 5cm}void print\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{struct {\bf header\+\_\+ilda}}]{hdr}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_af9fce4ec98c31e5a017b793e5f89a9e0}{}\label{ilda__reader_8c_af9fce4ec98c31e5a017b793e5f89a9e0}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read2\+\_\+d@{read2\+\_\+d}}
+\index{read2\+\_\+d@{read2\+\_\+d}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read2\+\_\+d(struct point2\+\_\+d $\ast$point, F\+I\+L\+E $\ast$ins)}{read2_d(struct point2_d *point, FILE *ins)}}]{\setlength{\rightskip}{0pt plus 5cm}int read2\+\_\+d (
+\begin{DoxyParamCaption}
+\item[{struct {\bf point2\+\_\+d} $\ast$}]{point, }
+\item[{F\+I\+LE $\ast$}]{ins}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_a6ccfb058e3e717fc6b62a16975aae044}{}\label{ilda__reader_8c_a6ccfb058e3e717fc6b62a16975aae044}
+
+
+Reads from a file into a \hyperlink{structpoint2__d}{point2\+\_\+d} P\+OD structure, should be called if format code \textquotesingle{}1\textquotesingle{} is encountered. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & \hyperlink{structpoint2__d}{point2\+\_\+d} P\+OD structure to read into. Does not need to be initialized. \\
+\hline
+{\em ins} & File descriptor to read from. Needs to be opened in binary read mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns -\/1 on read failure and 0 on success. 
+\end{DoxyReturn}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read2\+\_\+dt@{read2\+\_\+dt}}
+\index{read2\+\_\+dt@{read2\+\_\+dt}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read2\+\_\+dt(struct point2\+\_\+d\+\_\+true $\ast$point, F\+I\+L\+E $\ast$ins)}{read2_dt(struct point2_d_true *point, FILE *ins)}}]{\setlength{\rightskip}{0pt plus 5cm}int read2\+\_\+dt (
+\begin{DoxyParamCaption}
+\item[{struct {\bf point2\+\_\+d\+\_\+true} $\ast$}]{point, }
+\item[{F\+I\+LE $\ast$}]{ins}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_a42c4a3d0ee1c18a464bf952ab9e6e73d}{}\label{ilda__reader_8c_a42c4a3d0ee1c18a464bf952ab9e6e73d}
+
+
+Reads from a file into a \hyperlink{structpoint2__d__true}{point2\+\_\+d\+\_\+true} P\+OD structure, should be called if format code \textquotesingle{}5\textquotesingle{} is encountered. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & \hyperlink{structpoint2__d__true}{point2\+\_\+d\+\_\+true} P\+OD structure to read into. Does not need to be initialized. \\
+\hline
+{\em ins} & File descriptor to read from. Needs to be opened in binary read mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns -\/1 on read failure and 0 on success. 
+\end{DoxyReturn}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read3\+\_\+d@{read3\+\_\+d}}
+\index{read3\+\_\+d@{read3\+\_\+d}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read3\+\_\+d(struct point3\+\_\+d $\ast$point, F\+I\+L\+E $\ast$ins)}{read3_d(struct point3_d *point, FILE *ins)}}]{\setlength{\rightskip}{0pt plus 5cm}int read3\+\_\+d (
+\begin{DoxyParamCaption}
+\item[{struct {\bf point3\+\_\+d} $\ast$}]{point, }
+\item[{F\+I\+LE $\ast$}]{ins}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_acfc7598b101bc5f6551e0eba6079cca5}{}\label{ilda__reader_8c_acfc7598b101bc5f6551e0eba6079cca5}
+
+
+Reads from a file into a \hyperlink{structpoint3__d}{point3\+\_\+d} P\+OD structure, should be called if format code \textquotesingle{}0\textquotesingle{} is encountered. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & \hyperlink{structpoint3__d}{point3\+\_\+d} P\+OD structure to read into. Does not need to be initialized. \\
+\hline
+{\em ins} & File descriptor to read from. Needs to be opened in binary read mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns -\/1 on read failure and 0 on success. 
+\end{DoxyReturn}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read3\+\_\+dt@{read3\+\_\+dt}}
+\index{read3\+\_\+dt@{read3\+\_\+dt}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read3\+\_\+dt(struct point3\+\_\+d\+\_\+true $\ast$point, F\+I\+L\+E $\ast$ins)}{read3_dt(struct point3_d_true *point, FILE *ins)}}]{\setlength{\rightskip}{0pt plus 5cm}int read3\+\_\+dt (
+\begin{DoxyParamCaption}
+\item[{struct {\bf point3\+\_\+d\+\_\+true} $\ast$}]{point, }
+\item[{F\+I\+LE $\ast$}]{ins}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_ad8543fa23af10e3cdbe44e62c66556a1}{}\label{ilda__reader_8c_ad8543fa23af10e3cdbe44e62c66556a1}
+
+
+Reads from a file into a \hyperlink{structpoint3__d__true}{point3\+\_\+d\+\_\+true} P\+OD structure, should be called if format code \textquotesingle{}4\textquotesingle{} is encountered. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & \hyperlink{structpoint3__d__true}{point3\+\_\+d\+\_\+true} P\+OD structure to read into. Does not need to be initialized. \\
+\hline
+{\em ins} & File descriptor to read from. Needs to be opened in binary read mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns -\/1 on read failure and 0 on success. 
+\end{DoxyReturn}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read\+\_\+ilda@{read\+\_\+ilda}}
+\index{read\+\_\+ilda@{read\+\_\+ilda}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read\+\_\+ilda()}{read_ilda()}}]{\setlength{\rightskip}{0pt plus 5cm}void read\+\_\+ilda (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_a370b6a4c6d690796ef6e62ff7b2e5f94}{}\label{ilda__reader_8c_a370b6a4c6d690796ef6e62ff7b2e5f94}
+
+
+reads the whole ilda file and prints it on the console. Does not buffer anything. Will exit if file is not found. 
+
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read\+\_\+ilda\+\_\+header@{read\+\_\+ilda\+\_\+header}}
+\index{read\+\_\+ilda\+\_\+header@{read\+\_\+ilda\+\_\+header}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read\+\_\+ilda\+\_\+header(struct header\+\_\+ilda $\ast$hdr, F\+I\+L\+E $\ast$ins)}{read_ilda_header(struct header_ilda *hdr, FILE *ins)}}]{\setlength{\rightskip}{0pt plus 5cm}int read\+\_\+ilda\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{struct {\bf header\+\_\+ilda} $\ast$}]{hdr, }
+\item[{F\+I\+LE $\ast$}]{ins}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_a658cb1acb17941afee94de570f2197b8}{}\label{ilda__reader_8c_a658cb1acb17941afee94de570f2197b8}
+
+
+Puts ilda header information in the {\itshape hdr parameter from the ins} file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hdr} & ilda header P\+OD structure to put data in. Does not need to be initialized. \\
+\hline
+{\em ins} & file descriptor to read from. Needs to be opened in binary read mode. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns 0 for success, -\/1 if read failed, 1 if I\+L\+DA header is not recognized and 2 if the final header has been found. 
+\end{DoxyReturn}
+\index{ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}!read\+\_\+palette@{read\+\_\+palette}}
+\index{read\+\_\+palette@{read\+\_\+palette}!ilda\+\_\+reader.\+c@{ilda\+\_\+reader.\+c}}
+\paragraph[{\texorpdfstring{read\+\_\+palette(struct palette $\ast$point, F\+I\+L\+E $\ast$ins)}{read_palette(struct palette *point, FILE *ins)}}]{\setlength{\rightskip}{0pt plus 5cm}int read\+\_\+palette (
+\begin{DoxyParamCaption}
+\item[{struct {\bf palette} $\ast$}]{point, }
+\item[{F\+I\+LE $\ast$}]{ins}
+\end{DoxyParamCaption}
+)}\hypertarget{ilda__reader_8c_a620cfa9600a541d1c512b0ef7a63b92b}{}\label{ilda__reader_8c_a620cfa9600a541d1c512b0ef7a63b92b}
+
+
+Reads from a file into a palette P\+OD structure, should be called if format code \textquotesingle{}2\textquotesingle{} is encountered. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & palette P\+OD structure to read into. Does not need to be initialized. \\
+\hline
+{\em ins} & File descriptor to read from. Needs to be opened in binary read mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns -\/1 on read failure and 0 on success. 
+\end{DoxyReturn}
